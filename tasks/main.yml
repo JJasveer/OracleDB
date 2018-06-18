@@ -24,15 +24,6 @@
 - include: filesystems.yml
   when: pv.stat.isblk is defined
 
-#- name: check enough free space to continue 
-#  assert:
-#    that:
-#      - item.mount == "{{ oracle_bin_fs }}" and item.size_available < 5368709120
-#      - item.mount == "{{ oracle_data_fs }}" and item.size_available < 2147483648
-#      - item.mount == "{{ oracle_tmp }}" and item.size_available < 5368709120
-#  with_items: "{{ ansible_mounts }}"
-#  ignore_errors: yes
-
 - include: packages.yml
 
 - name: make sure the installer directory exists
@@ -60,12 +51,6 @@
   include: swap_check.yml
   when: swapsize.stdout | int < 200000
 
-#- name: compose the oracle automated installer settings
-#  template:
-#    src: db_install.rsp.{{ oracle_version | regex_replace ('^([0-9]{1,2}.[0-9]{1,}.[0-9]{1,})(.*)$','\g<1>') }}.j2
-#    dest: "{{ oracle_tmp }}/db_install.rsp"
-#    owner: "{{ oracle_user[0].name }}"
-#    group: "{{ oracle_group[0].name }}"
 
 - include: copy_archives.yml
 
